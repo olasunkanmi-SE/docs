@@ -27,7 +27,7 @@ export const SideBar = ({ contacts, q, searching }: ISideBar) => {
             id="q"
             aria-label="Search contacts"
             className={searching ? "loading" : ""}
-            defaultValue={q || ""}
+            defaultValue={q ?? ""}
             placeholder="Search"
             type="search"
             name="q"
@@ -38,33 +38,35 @@ export const SideBar = ({ contacts, q, searching }: ISideBar) => {
           <button type="submit">New</button>
         </Form>
       </div>
-      <nav>
-        {contacts.length ? (
-          <ul>
-            {contacts.map((contact) => (
-              <li key={contact.id}>
-                <NavLink
-                  className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
-                  to={`contacts/${contact.id}`}
-                >
-                  {contact.first || contact.last ? (
-                    <>
-                      {contact.first} {contact.last}
-                    </>
-                  ) : (
-                    <i>No Name</i>
-                  )}{" "}
-                  {contact.favorite ? <span>★</span> : null}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>
-            <i>No contacts</i>
-          </p>
-        )}
-      </nav>
+      <div>
+        <nav>
+          {contacts.length ? (
+            <ul>
+              {contacts.map((contact) => (
+                <li key={contact.id}>
+                  <NavLink
+                    className={({ isActive, isPending }) => (isActive ? "active" : isPending ? "pending" : "")}
+                    to={`contacts/${contact.id}`}
+                  >
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <i>No Name</i>
+                    )}{" "}
+                    {contact.favorite ? <span>★</span> : null}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
+        </nav>
+      </div>
     </div>
   );
 };

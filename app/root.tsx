@@ -1,14 +1,5 @@
 import { json, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-  useNavigation,
-  useSubmit,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigation } from "@remix-run/react";
 import { useEffect } from "react";
 
 import type { LinksFunction } from "@remix-run/node";
@@ -20,6 +11,8 @@ import styles from "./style.css?url";
 import { NavBar } from "./components/navbar";
 import { SideBar } from "./components/sidebar";
 import { createEmptyContact, getContacts } from "./data";
+import { ErrorBoundary } from "./components/Error/Errorboundary";
+import { ErrorFallBackComponent } from "./components/Error/ErrorFallBackComponent";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -42,15 +35,14 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
 
-export default function App() {
+function MyApp() {
   const { contacts, q } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
-  const submit = useSubmit();
   const searching = navigation.location && new URLSearchParams(navigation.location.search).has("q");
   useEffect(() => {
     const searchField = document.getElementById("q");
     if (searchField instanceof HTMLInputElement) {
-      searchField.value = q || "";
+      searchField.value = q ?? "";
     }
   }, [q]);
   return (
@@ -63,7 +55,11 @@ export default function App() {
       </head>
       <NavBar></NavBar>
       <body>
-        <SideBar q={q} contacts={contacts} searching={searching} />
+        <div>
+          {" "}
+          <SideBar q={q} contacts={contacts} searching={searching} />
+        </div>
+
         <div className={navigation.state === "loading" && !searching ? "loading" : ""} id="detail">
           <Outlet />
         </div>
@@ -71,5 +67,13 @@ export default function App() {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  return (
+    <ErrorBoundary fallBackComponent={ErrorFallBackComponent()}>
+      <MyApp />
+    </ErrorBoundary>
   );
 }
