@@ -5,11 +5,16 @@ import type { LinksFunction } from "@remix-run/node";
 
 import appStylesHref from "./app.css?url";
 
-import { ContactRecord, getContacts } from "./data";
+import { ContactRecord, getContacts, createEmptyContact } from "./data";
 
 export const loader = async () => {
   const contacts: ContactRecord[] = await getContacts();
   return json({ contacts });
+};
+
+export const action = async () => {
+  const contact = await createEmptyContact();
+  return json({ contact });
 };
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: appStylesHref }];
