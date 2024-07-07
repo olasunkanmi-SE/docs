@@ -20,6 +20,7 @@ import appStylesHref from "./app.css?url";
 import styles from "./style.css?url";
 
 import { getContacts, createEmptyContact } from "./data";
+import { NavBar } from "./components/navbar";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -34,16 +35,12 @@ export const action = async () => {
 };
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: appStylesHref },
-  { rel: "stylesheet", href: styles },
-  // {
-  //   rel: "stylesheet",
-  //   href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css",
-  // },
   {
     rel: "stylesheet",
-    href: "https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js",
+    href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css",
   },
+  { rel: "stylesheet", href: appStylesHref },
+  { rel: "stylesheet", href: styles },
 ];
 
 export default function App() {
@@ -65,6 +62,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
+      <NavBar></NavBar>
       <body>
         <div id="sidebar">
           <h1>Remix Contacts</h1>
