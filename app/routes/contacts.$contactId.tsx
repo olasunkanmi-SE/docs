@@ -1,4 +1,4 @@
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 import type { FunctionComponent } from "react";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 
@@ -71,10 +71,11 @@ export default function Contact() {
 const Favorite: FunctionComponent<{
   contact: Pick<ContactRecord, "favorite">;
 }> = ({ contact }) => {
+  const fetcher = useFetcher();
   const favorite = contact.favorite;
 
   return (
-    <Form method="post">
+    <fetcher.Form method="post">
       <button
         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         name="favorite"
@@ -82,6 +83,6 @@ const Favorite: FunctionComponent<{
       >
         {favorite ? "★" : "☆"}
       </button>
-    </Form>
+    </fetcher.Form>
   );
 };
