@@ -1,6 +1,7 @@
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 import type { FunctionComponent } from "react";
 import { json, LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+import DOMPurify from "dompurify";
 
 import type { ContactRecord } from "../data";
 
@@ -30,10 +31,6 @@ export default function Contact() {
   return (
     <div id="contact">
       <div>
-        <img alt={`${contact.first} ${contact.last} avatar`} key={contact.avatar} src={contact.avatar} />
-      </div>
-
-      <div>
         <h1>
           {contact.first || contact.last ? (
             <>
@@ -51,7 +48,13 @@ export default function Contact() {
           </p>
         ) : null}
 
-        {contact.notes ? <p>{contact.notes}</p> : null}
+        {contact.notes ? (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(contact.notes),
+            }}
+          ></p>
+        ) : null}
 
         <div>
           <Form action="edit">
