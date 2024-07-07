@@ -17,6 +17,8 @@ import type { LinksFunction } from "@remix-run/node";
 
 import appStylesHref from "./app.css?url";
 
+import styles from "./style.css?url";
+
 import { getContacts, createEmptyContact } from "./data";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -31,7 +33,18 @@ export const action = async () => {
   return redirect(`/contacts/${contact.id}/edit`);
 };
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: appStylesHref }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: appStylesHref },
+  { rel: "stylesheet", href: styles },
+  // {
+  //   rel: "stylesheet",
+  //   href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css",
+  // },
+  {
+    rel: "stylesheet",
+    href: "https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js",
+  },
+];
 
 export default function App() {
   const { contacts, q } = useLoaderData<typeof loader>();
